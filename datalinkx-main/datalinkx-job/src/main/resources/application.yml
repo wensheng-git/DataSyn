@@ -1,0 +1,57 @@
+server:
+  port: 23456
+
+spring:
+  application:
+    name: datalinkx-job
+  redis:
+    database: 0      # Redis数据库索引（默认为0）,如果设置为1，那么存入的key-value都存放在select 1中
+    host: 127.0.0.1
+    port: 6379
+    password:
+
+logging:
+  pattern:
+    console: ${CONSOLE_LOG_PATTERN:%clr(%d{${LOG_DATEFORMAT_PATTERN:yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(${PID:- }){magenta} [${spring.application.name}] %clr([%10.10t]){faint}[%36.36X{trace_id}] %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}}
+  file:
+    name: log/${spring.application.name}.log
+  level:
+    com.datalinkx: INFO
+
+xxl:
+  job:
+    accessToken:
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    executor:
+      address: ''
+      appname: dataTransJobHandler
+      ip: ''
+      logpath: log/jobhandler  # 调度日志的路径
+      logretentiondays: 30
+      port: 9999
+
+client:
+  dataserver:
+    url: http://localhost:12345    # datalinkx-server的地址
+    connect_timeout_ms: 20000
+    call_timeout_ms: 600000
+    read_timeout_ms: 600000
+    logging: true
+  flink:
+    url: http://localhost:8081       # flink服务器的地址
+    connect_timeout_ms: 20000
+    call_timeout_ms: 600000
+    read_timeout_ms: 600000
+    logging: true
+
+flinkx:
+  path: H:\design_project\flinkx\     #本项目中datalinkx下flinkx地址，后面加\,要拼接
+
+# 支持流转的数据源
+support:
+  datasource:
+    - mysql
+    - elasticsearch
+reserve:
+  job_graph: true
